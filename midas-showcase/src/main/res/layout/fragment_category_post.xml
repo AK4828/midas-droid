@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp10">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp14"
+        android:text="@string/name"/>
+
+    <EditText
+        android:id="@+id/field_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp16"
+        android:hint="@string/name"
+        android:nextFocusDown="@+id/field_category"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp14"
+        android:text="@string/description"/>
+
+    <EditText
+        android:id="@+id/field_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp16"
+        android:focusable="false"
+        android:editable="false"
+        android:hint="@string/description"
+        android:nextFocusDown="@+id/submit_btn"/>
+
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:layout_marginTop="@dimen/dp20"/>
+</LinearLayout>

@@ -162,7 +162,6 @@ public class NewsViewFragment extends DefaultFragment implements TaskService<Obj
             if (categoryAdapter.isEmpty()) {
                 new CategoryGet(getActivity(), this).execute("");
             } else {
-                advancedSearch();
             }
         }
 
@@ -195,7 +194,6 @@ public class NewsViewFragment extends DefaultFragment implements TaskService<Obj
             } else if (code == GlobalVariable.CATEGORY_GET_TASK) {
                 categoryAdapter.addAll((List<Category>) objects);
 
-                advancedSearch();
             }
         }
     }
@@ -216,45 +214,4 @@ public class NewsViewFragment extends DefaultFragment implements TaskService<Obj
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void advancedSearch() {
-        ViewGroup group = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.dialog_advanced_search, container, false);
-        Button submit = (Button) group.findViewById(R.id.button_submit);
-        final AutoCompleteTextView category = (AutoCompleteTextView) group.findViewById(R.id.edit_category);
-        final EditText name = (EditText) group.findViewById(R.id.edit_name);
-
-        category.setAdapter(categoryAdapter);
-        category.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    category.showDropDown();
-                }
-            }
-        });
-        category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                category.setTag(categoryAdapter.getItem(i).getId());
-            }
-        });
-
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String param1 = name.getText().toString() != null ? name.getText().toString() : "";
-                String param2 = category.getTag() != null ? category.getTag().toString() : "";
-//                new TenantListTask(TenantActivity.this, TenantActivity.this).execute(param1, param2, 0, 0);
-                newsGet = new NewsGet(getActivity(), NewsViewFragment.this);
-                newsGet.execute(param1, "10", "0");
-            }
-        });
-
-        if (!showSearch) {
-            container.addView(group, 0);
-            showSearch = true;
-        } else {
-            container.removeViewAt(0);
-            showSearch = false;
-        }
-    }
 }

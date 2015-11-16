@@ -1,5 +1,7 @@
 package org.meruvian.midas.showcase.entity;
 
+import org.meruvian.midas.core.entity.DefaultEntity;
+
 /**
  * Created by ludviantoovandi on 24/07/14.
  */

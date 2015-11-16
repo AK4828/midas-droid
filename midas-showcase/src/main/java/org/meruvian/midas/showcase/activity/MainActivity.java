@@ -51,10 +51,10 @@ public class MainActivity extends NavigationDrawer {
         registerGcmDevice.register(this);
     }
 
-    @Override
-    public int iconHome() {
-        return R.drawable.ic_home;
-    }
+//    @Override
+//    public int iconHome() {
+//        return R.drawable.ic_home;
+//    }
 
     @Override
     protected void onResume() {
