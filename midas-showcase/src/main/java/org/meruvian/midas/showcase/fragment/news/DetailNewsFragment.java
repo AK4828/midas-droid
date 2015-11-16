@@ -20,13 +20,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import butterknife.InjectViews;
+import butterknife.Bind;
+
 
 /**
  * Created by ludviantoovandi on 25/10/14.
  */
 public class DetailNewsFragment extends DefaultFragment implements TaskService<News> {
-    @InjectViews({R.id.text_title, R.id.text_date, R.id.text_content})
+    @Bind({R.id.text_title, R.id.text_date, R.id.text_content})
     List<TextView> textViews;
 
     private ProgressDialog dialog;

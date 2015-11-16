@@ -9,6 +9,6 @@ import butterknife.ButterKnife;
  */
 public class DefaultHolder {
     public DefaultHolder(View view) {
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 }

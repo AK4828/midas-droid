@@ -5,6 +5,5 @@
     <item android:id="@+id/action_refresh"
         android:title="@string/refresh"
         android:orderInCategory="0"
-        android:icon="@drawable/navigation_refresh"
         app:showAsAction="withText|ifRoom" />
 </menu>

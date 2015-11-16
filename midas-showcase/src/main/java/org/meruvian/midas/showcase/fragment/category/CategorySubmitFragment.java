@@ -20,18 +20,17 @@ import org.meruvian.midas.showcase.task.category.CategoryPost;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.InjectViews;
 
 /**
  * Created by ludviantoovandi on 24/07/14.
  */
 public class CategorySubmitFragment extends DefaultFragment implements TaskService<Category> {
 
-    @InjectViews({R.id.field_name, R.id.field_description})
+    @Bind({R.id.field_name, R.id.field_description})
     List<EditText> fields;
-    @InjectView(R.id.submit_btn)
+    @Bind(R.id.submit_btn)
     Button submit;
 
     private ProgressDialog progressDialog;

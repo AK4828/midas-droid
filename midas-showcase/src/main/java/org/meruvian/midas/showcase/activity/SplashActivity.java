@@ -27,8 +27,8 @@ import org.meruvian.midas.social.task.google.RequestAccessGoogle;
 import org.meruvian.midas.social.task.mervid.RefreshTokenMervID;
 import org.meruvian.midas.social.task.mervid.RequestAccessMervID;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by ludviantoovandi on 15/10/14.
@@ -38,7 +38,7 @@ public class SplashActivity extends DefaultActivity implements TaskService {
 
     private ProgressDialog progressDialog;
 
-    @InjectView(R.id.button_refresh)
+    @Bind(R.id.button_refresh)
     Button refresh;
 
     @Override
@@ -48,6 +48,7 @@ public class SplashActivity extends DefaultActivity implements TaskService {
 
     @Override
     public void onViewCreated() {
+        ButterKnife.bind(this);
 //        super.onCreate(savedInstanceState);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        setContentView(R.layout.splash_activity);

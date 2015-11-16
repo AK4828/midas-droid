@@ -1,73 +1,76 @@
 package org.meruvian.midas.core;
 
 import android.app.Application;
-import android.util.Log;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.path.android.jobqueue.JobManager;
 import com.path.android.jobqueue.config.Configuration;
-import com.path.android.jobqueue.log.CustomLogger;
+import com.squareup.okhttp.OkHttpClient;
+
+import org.meruvian.midas.core.interceptor.SecurityInterceptor;
+
+import retrofit.JacksonConverterFactory;
+import retrofit.Retrofit;
+
 
 /**
  * Created by ludviantoovandi on 06/03/15.
  */
-public abstract class MidasApplication extends Application {
+public class MidasApplication extends Application {
     private static MidasApplication instance;
+
     private JobManager jobManager;
+    private Retrofit retrofit;
+    private ObjectMapper objectMapper;
 
     public MidasApplication() {
-        this.instance = this;
+        instance = this;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        jobManager = new JobManager(getApplicationContext(), configJobManager());
-
-        onCreated();
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        configureJobManager();
+        configureRestAdaper();
     }
 
-    public abstract void onCreated();
 
-    public Configuration configJobManager() {
-        Configuration.Builder builder = new Configuration.Builder(this).customLogger(
-                new CustomLogger() {
-                    private static final String TAG = "JOB";
+    private void configureRestAdaper() {
+        OkHttpClient client = new OkHttpClient();
+        client.interceptors().add(new SecurityInterceptor());
 
-                    @Override
-                    public boolean isDebugEnabled() {
-                        return false;
-                    }
-
-                    @Override
-                    public void d(String text, Object... args) {
-                        Log.d(TAG, String.format(text, args));
-                    }
-
-                    @Override
-                    public void e(Throwable t, String text, Object... args) {
-                        Log.d(TAG, String.format(text, args));
-                    }
-
-                    @Override
-                    public void e(String text, Object... args) {
-                        Log.d(TAG, String.format(text, args));
-                    }
-                }
-        );
-        builder.minConsumerCount(1);
-        builder.maxConsumerCount(3);
-        builder.loadFactor(3);
-        builder.consumerKeepAlive(120); // count by minute
-
-        return builder.build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://demo.merv.id")
+                .client(client)
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .build();
     }
 
-    public JobManager getJobManager() {
-        return jobManager;
+    private void configureJobManager() {
+        Configuration configuration = new Configuration.Builder(this)
+                .minConsumerCount(1)//always keep at least one consumer alive
+                .maxConsumerCount(3)//up to 3 consumers at a time
+                .loadFactor(3)//3 jobs per consumer
+                .consumerKeepAlive(120)//wait 2 minute
+                .build();
+        jobManager = new JobManager(this, configuration);
     }
 
     public static MidasApplication getInstance() {
         return instance;
+    }
+
+    public Retrofit getRetrofit() {
+        return retrofit;
+    }
+    public JobManager getJobManager() {
+        return jobManager;
+    }
+
+    public ObjectMapper getObjectMapper() {
+        return objectMapper;
     }
 }

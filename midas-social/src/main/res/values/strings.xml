@@ -8,33 +8,55 @@
     <string name="login_facebook">Login with Facebook</string>
     <string name="login_twitter">Login with Twitter</string>
     <string name="login_google">Login with Google+</string>
+    <string name="login_yama">Login with Yama ID</string>
+    <string name="login_dna">Login with DNA ID</string>
+    <string name="login_v2">Login with V2 Merv ID</string>
 
     <string name="logout_merv_id">Logout from Merv.ID</string>
     <string name="logout_facebook">Logout from Facebook</string>
     <string name="logout_twitter">Logout from Twitter</string>
-    <string name="logout_google">Logout form Google+</string>
+    <string name="logout_google">Logout from Google+</string>
+    <string name="logout_yama">Logout from Yama ID</string>
+    <string name="logout_dna">Logout from DNA ID</string>
+    <string name="logout_v2">Logout from V2 ID</string>
 
     <string name="signing_in_merv_id">Signing in Merv.ID</string>
     <string name="signing_in_facebook">Signing in Facebook</string>
     <string name="signing_in_twitter">Signing in Twitter</string>
     <string name="signing_in_google">Signing in Google+</string>
+    <string name="signing_in_yama">Signing in Yama ID</string>
+    <string name="signing_in_dna">Signing in DNA ID</string>
+    <string name="signing_in_v2">Signing in V2 Merv ID</string>
 
     <string name="access_merv_id">Connecting to Merv.ID</string>
     <string name="access_facebook">Connecting to in Facebook</string>
     <string name="access_twitter">Connection to Twitter</string>
     <string name="access_google">Connecting to Google+</string>
+    <string name="access_yama_id">Connecting to Yama ID</string>
+    <string name="access_dna_id">Connecting to DNA ID</string>
+    <string name="access_v2_id">Connecting to V2 Merv ID</string>
 
     <string name="refresh_merv_id">Refresh Token Merv.ID</string>
     <string name="refresh_facebook">Refresh Token Facebook</string>
     <string name="refresh_google">Refresh Token Google+</string>
+    <string name="refresh_yama">Refresh Token Yama ID</string>
+    <string name="refresh_dna">Refresh Token DNA ID</string>
+    <string name="refresh_v2">Refresh Token V2 Merv ID</string>
 
     <string name="update_merv_id">Updating Merv.ID Information</string>
     <string name="update_facebook">Updating Facebook Information</string>
     <string name="update_google">Updating Google+ Information</string>
+    <string name="update_yama">Updating Yama ID Informatin</string>
+    <string name="update_dna">Updating DNA ID Information</string>
+    <string name="update_v2">Updating V2 Merv ID Information</string>
 
     <string name="finish_update_merv_id">Succeed Update Merv.ID Information</string>
     <string name="finish_update_facebook">Succeed Update Facebook Information</string>
     <string name="finish_update_google">Succeed Update Google+ Information</string>
+    <string name="finish_update_yama">Succeed Update Yama ID</string>
+    <string name="finish_update_dna">Succeed Update DNA ID</string>
+    <string name="finish_update_v2">Succeed Update V2 Merv ID</string>
 
     <string name="failed_recieve">Failed receive Data</string>
+    <string name="failed_login">Login Failed</string>
 </resources>

@@ -27,7 +27,7 @@ public abstract class DefaultActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(layout());
 
-        ButterKnife.inject(this);
+//        ButterKnife.inject(this);
 
         onViewCreated();
 

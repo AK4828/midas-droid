@@ -5,7 +5,7 @@ import org.meruvian.midas.core.entity.DefaultEntity;
 /**
  * Created by ludviantoovandi on 17/01/15.
  */
-public class Category extends DefaultEntity {
+public class Category extends DefaultEntity{
     private String name = "";
     private String description = "";
     private String parentCategory = "";

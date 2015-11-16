@@ -20,16 +20,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -38,13 +44,15 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.util.Base64;
+import android.util.Log;
 
 /**
  * @author Dias Nurul Arifin
- * 
+ *
  */
 public class ConnectionUtil {
-	
+
 	public static final int TIMEOUT = 15000;
 
 	public static boolean isInternetAvailable(Context context) {
@@ -55,9 +63,9 @@ public class ConnectionUtil {
 		else
 			return false;
 	}
-	
+
 	public static HttpParams getHttpParams(int connectionTimeout,
-			int socketTimeout) {
+										   int socketTimeout) {
 		HttpParams params = new BasicHttpParams();
 
 		HttpConnectionParams.setConnectionTimeout(params, connectionTimeout);
@@ -65,17 +73,18 @@ public class ConnectionUtil {
 
 		return params;
 	}
-	
+
 	public static JSONObject get(String url) {
 		JSONObject json = null;
-		
+
 		try {
 			HttpClient httpClient = new DefaultHttpClient(getHttpParams(TIMEOUT, TIMEOUT));
 			HttpGet httpGet = new HttpGet(url);
-			
+
 			httpGet.setHeader("Content-Type", "application/json");
+
 			HttpResponse response = httpClient.execute(httpGet);
-			
+
 			json = new JSONObject(convertEntityToString(response.getEntity()));
 		} catch (IOException e) {
 			json = null;
@@ -89,13 +98,112 @@ public class ConnectionUtil {
 		}
 		return json;
 	}
-	
+
+	public static JSONObject getByHeader(String url, String authorization) {
+		JSONObject json = null;
+
+		try {
+			HttpClient httpClient = new DefaultHttpClient(getHttpParams(TIMEOUT, TIMEOUT));
+			HttpGet httpGet = new HttpGet(url);
+
+			String authBase64 = Base64.encodeToString(authorization.getBytes(), Base64.DEFAULT);
+
+			httpGet.addHeader("Authorization", "Basic " + authBase64);
+			httpGet.setHeader("Host", httpGet.getURI().getHost());
+
+			for (Header header : httpGet.getAllHeaders()) {
+				Log.d("ConnectionUtil Headers: ", header.toString());
+			}
+
+			HttpResponse response = httpClient.execute(httpGet);
+
+			json = new JSONObject(convertEntityToString(response.getEntity()));
+		} catch (IOException e) {
+			json = null;
+			e.printStackTrace();
+		} catch (JSONException e) {
+			json = null;
+			e.printStackTrace();
+		} catch (Exception e) {
+			json = null;
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+	public static JSONObject postHttp(String url, String authorization){
+		JSONObject json = null;
+
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httpPost = new HttpPost(url);
+
+		String authBase64 = Base64.encodeToString(authorization.getBytes(), Base64.DEFAULT);
+
+		httpPost.addHeader("Authorization", "Basic " + authBase64);
+		httpPost.setHeader("Host", httpPost.getURI().getHost());
+
+		Log.d("ConnectionUtil", "HttpPost: " + httpPost.getURI().toString());
+		for (Header header : httpPost.getAllHeaders()) {
+			Log.d("ConnectionUtil Headers: ", header.toString());
+		}
+
+		try {
+			CloseableHttpResponse response2 = httpclient.execute(httpPost);
+
+			Log.d("ConnectionUtil", "Response Code: " + response2.getStatusLine().getStatusCode()
+					+ " " + response2.getStatusLine().getReasonPhrase());
+
+			Log.d("ConnectionUtil", "Response " + convertEntityToString(response2.getEntity()));
+
+			json = new JSONObject(convertEntityToString(response2.getEntity()));
+
+			Log.d("JSON kudune",json.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.e("ConnectionUtil", e.getMessage(), e);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			Log.e("ConnectionUtil", e.getMessage(), e);
+		}
+
+		return json;
+	}
+
+	public static JSONObject getWithAuthorizationHeader(String url, String authorization) {
+		JSONObject json = null;
+
+		try {
+			HttpClient httpClient = new DefaultHttpClient(getHttpParams(TIMEOUT, TIMEOUT));
+//            HttpGet httpGet = new HttpGet(url);
+			HttpPost httpPost = new HttpPost(url);
+
+			String authBase64 = Base64.encodeToString(authorization.getBytes(), Base64.NO_WRAP);
+
+			httpPost.setHeader("Authorization", "Basic " + authBase64);
+
+			HttpResponse response = httpClient.execute(httpPost);
+
+			json = new JSONObject(convertEntityToString(response.getEntity()));
+		} catch (IOException e) {
+			json = null;
+			e.printStackTrace();
+		} catch (JSONException e) {
+			json = null;
+			e.printStackTrace();
+		} catch (Exception e) {
+			json = null;
+			e.printStackTrace();
+		}
+		return json;
+	}
+
 	public static JSONObject post(String url, List<NameValuePair> nameValuePairs) {
 		JSONObject json = null;
 		try {
 			HttpClient httpClient = new DefaultHttpClient(getHttpParams(TIMEOUT, TIMEOUT));
 			HttpPost httpPost = new HttpPost(url);
-			
+
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = httpClient.execute(httpPost);
 			json = new JSONObject(convertEntityToString(response.getEntity()));
@@ -131,4 +239,5 @@ public class ConnectionUtil {
 		}
 		return total.toString();
 	}
+
 }

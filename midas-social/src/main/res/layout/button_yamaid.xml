@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_layout_mervid">
+
+    <ImageView
+        android:id="@+id/facebook_logo"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:src="@drawable/mervid_logo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/ref_button"
+        android:layout_alignBottom="@+id/ref_button"
+        android:layout_centerHorizontal="true"
+        android:padding="3dp"
+        android:focusable="false"/>
+
+    <View
+        android:layout_width="2px"
+        android:layout_height="fill_parent"
+        android:background="@color/mervid_click"/>
+
+    <Button
+        android:id="@+id/button_yamaid_login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        style="@style/mervid_button"
+        android:text="Login with Yama ID"
+        android:background="@drawable/bg_mervid"
+        android:paddingLeft="@dimen/dp20"
+        android:gravity="left|center_vertical"
+        android:textSize="@dimen/sp16"/>
+</LinearLayout>
