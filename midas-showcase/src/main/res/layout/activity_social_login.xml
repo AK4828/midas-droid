@@ -25,30 +25,30 @@
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_users"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp16"/>
-
             <include layout="@layout/button_facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-            <!--<include layout="@layout/button_twitter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp5"/>-->
 
             <include layout="@layout/button_gplus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp5"/>
 
-            <include layout="@layout/button_mervid"
+            <include layout="@layout/button_mervid_v2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp5"/>
+
+            <include layout="@layout/button_yamaid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp5"/>
+
+            <include layout="@layout/button_mervid_dna"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp5"/>
+
         </LinearLayout>
     </LinearLayout>
 

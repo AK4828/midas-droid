@@ -24,6 +24,7 @@ import org.meruvian.midas.social.R;
 import org.meruvian.midas.social.SocialVariable;
 import org.meruvian.midas.social.service.LoginService;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ public class RequestTokenV2MervID extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
+
         Retrofit retrofit = MidasApplication.getInstance().getRetrofit();
         LoginService loginService = retrofit.create(LoginService.class);
 
@@ -68,40 +70,22 @@ public class RequestTokenV2MervID extends AsyncTask<String, Void, String> {
 
         String authorization = new String(Base64.encode((SocialVariable.V2_APP_ID + ":" + SocialVariable.V2_API_SECRET).getBytes(), Base64.NO_WRAP));
 
+        Call<Authentication> callAuth = loginService.requestTokenYamaID("Basic " + authorization, "demo.merv.id", param);
+
         try {
-            Call<Authentication> callAuth = loginService.requestTokenYamaID("Basic " + authorization, "demo.merv.id", param);
-
-            callAuth.enqueue(new Callback<Authentication>() {
-                @Override
-                public void onResponse(Response<Authentication> response, Retrofit retrofit) {
-                    if (response.isSuccess()) {
-                        authentication = response.body();
-                        AuthenticationUtils.registerAuthentication(authentication);
-                    } else {
-                        int statusCode = response.code();
-                        Toast.makeText(context, "Failed retrieve data", Toast.LENGTH_SHORT).show();
-                        ResponseBody errorBody = response.errorBody();
-                    }
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    Toast.makeText(context, "Failed retrieve data", Toast.LENGTH_SHORT).show();
-                    Log.d("Error", t.getMessage());
-                }
-            });
-
-        } catch (Exception e ) {
-            e.getMessage();
-            Log.e("error", e.getMessage());
+            authentication = callAuth.execute().body();
+            AuthenticationUtils.registerAuthentication(authentication);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
 
         return authentication.getAccesToken();
     }
 
     @Override
-    protected void onPostExecute(String accestoken) {
-        service.onSuccess(SocialVariable.V2ID_REQUEST_TOKEN_TASK, accestoken);
+    protected void onPostExecute(String string) {
+        service.onSuccess(SocialVariable.V2ID_REQUEST_TOKEN_TASK, string);
     }
 
 }

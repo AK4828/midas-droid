@@ -31,8 +31,8 @@ public class SocialVariable {
 
     public static final String V2_APP_ID = "ad1a4cdf-2223-4e17-ab4c-91f7bdb237da";
     public static final String V2_API_SECRET = "3OHbnRhtYd3XhYgqHrOfQbHkOuSuBnpwZ7UW3l7VAb2e8zv3UcXsuAICyZj3GXT7";
-    public static final String V2_AUTH_URL = "http://demo.merv.id/oauth/authorize";
-    public static final String V2_REQUEST_TOKEN = "http://demo.merv.id/oauth/token";
+    public static final String V2_AUTH_URL = "http://demo.merv.id/backend/oauth/authorize";
+    public static final String V2_REQUEST_TOKEN = "http://demo.merv.id/backend/oauth/token";
     public static final String V2_REQUEST_ME = "http://api.merv.id/v1/users/me";
     public static final String V2_CALLBACK = "midas://social_login";
 

@@ -14,7 +14,7 @@ import retrofit.http.QueryMap;
  * Created by akm on 22/10/15.
  */
 public interface LoginService {
-    @POST("/oauth/token")
-    Call<Authentication> requestTokenYamaID(@Header("Authorization") String authorization, @Header("Host") String host, @QueryMap Map<String, String> queryParam);
+    @POST("/backend/oauth/token")
+    Call<Authentication> requestTokenYamaID(@Header("Authorization") String authorization, @Header("Host") String host, @QueryMap Map<String,String> queryParam);
 
 }

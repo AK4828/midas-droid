@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.path.android.jobqueue.JobManager;
 import com.path.android.jobqueue.config.Configuration;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import org.meruvian.midas.core.interceptor.SecurityInterceptor;
 
@@ -39,11 +40,15 @@ public class MidasApplication extends Application {
 
 
     private void configureRestAdaper() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient();
         client.interceptors().add(new SecurityInterceptor());
+        client.interceptors().add(logging);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://demo.merv.id")
+                .baseUrl("http://yama2.meruvian.org")
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .build();

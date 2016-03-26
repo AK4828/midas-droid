@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
@@ -11,18 +12,30 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.meruvian.midas.core.MidasApplication;
+import org.meruvian.midas.core.entity.Authentication;
 import org.meruvian.midas.core.service.TaskService;
+import org.meruvian.midas.core.util.AuthenticationUtils;
 import org.meruvian.midas.core.util.ConnectionUtil;
 import org.meruvian.midas.social.R;
 import org.meruvian.midas.social.SocialVariable;
+import org.meruvian.midas.social.service.LoginService;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit.Call;
+import retrofit.Retrofit;
 
 /**
  * Created by akm on 21/10/15.
  */
-public class RefreshTokenV2MervID extends AsyncTask<String,Void, JSONObject> {
+public class RefreshTokenV2MervID extends AsyncTask<String, Void, String> {
 
     private TaskService service;
     private Context context;
+    private Authentication authentication;
 
     public RefreshTokenV2MervID(TaskService service, Context context){
         this.service = service;
@@ -35,49 +48,39 @@ public class RefreshTokenV2MervID extends AsyncTask<String,Void, JSONObject> {
     }
 
     @Override
-    protected JSONObject doInBackground(String... params) {
+    protected String doInBackground(String... params) {
+
+        Retrofit retrofit = MidasApplication.getInstance().getRetrofit();
+        LoginService loginService = retrofit.create(LoginService.class);
+
+        authentication = AuthenticationUtils.getCurrentAuthentication();
+
+        Map<String, String> param = new HashMap<>();
+
+        param.put("grant_type", GrantType.REFRESH_TOKEN.toString());
+        param.put("redirect_uri", SocialVariable.V2_CALLBACK);
+        param.put("client_id", SocialVariable.V2_APP_ID);
+        param.put("client_secret", SocialVariable.V2_API_SECRET);
+        param.put("scope", "read write");
+        param.put("code", params[0]);
+
+        String authorization = new String(Base64.encode((SocialVariable.V2_APP_ID + ":" + SocialVariable.V2_API_SECRET).getBytes(), Base64.NO_WRAP));
+
+        Call<Authentication> callAuth = loginService.requestTokenYamaID("Basic " + authorization, "demo.merv.id", param);
+
         try {
-            OAuthClientRequest request = OAuthClientRequest
-                    .tokenLocation(SocialVariable.V2_REQUEST_TOKEN)
-                    .setGrantType(GrantType.REFRESH_TOKEN)
-                    .setClientId(SocialVariable.V2_APP_ID)
-                    .setClientSecret(SocialVariable.V2_API_SECRET)
-                    .setRefreshToken(params[0])
-                    .buildQueryMessage();
-
-            String authorization = SocialVariable.V2_APP_ID + ":" + SocialVariable.V2_API_SECRET;
-
-            return ConnectionUtil.getWithAuthorizationHeader(request.getLocationUri(), authorization);
-
-        }catch (OAuthSystemException e) {
+            authentication = callAuth.execute().body();
+            AuthenticationUtils.registerAuthentication(authentication);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return authentication.getAccesToken();
     }
 
     @Override
-    protected void onPostExecute(JSONObject jsonObject) {
-        if (jsonObject != null) {
-            try {
-                Log.i(getClass().getSimpleName(), "json : " + jsonObject.toString());
+    protected void onPostExecute(String s) {
+        service.onSuccess(SocialVariable.V2ID_REQUEST_TOKEN_TASK, s);
 
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-                editor.putBoolean("v2id", true);
-                editor.putString("v2id_token", jsonObject.getString("access_token"));
-                editor.putString("v2id_refresh_token", jsonObject.getString("refresh_token"));
-                editor.putString("v2id_token_type", jsonObject.getString("token_type"));
-                editor.putLong("v2id_expires_in", jsonObject.getLong("expires_in"));
-                editor.putString("v2id_scope", jsonObject.getString("scope"));
-                editor.putString("v2id_jti", jsonObject.getString("jti"));
-                editor.commit();
-
-                service.onSuccess(SocialVariable.V2ID_REQUEST_TOKEN_TASK, jsonObject.getString("access_token"));
-
-            }catch (JSONException e) {
-                e.printStackTrace();
-                Log.e(getClass().getSimpleName(), e.getMessage(), e);
-                service.onError(SocialVariable.V2ID_REQUEST_TOKEN_TASK, context.getString(R.string.failed_recieve));
-            }
-        }
     }
 }

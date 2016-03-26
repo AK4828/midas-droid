@@ -51,56 +51,38 @@ public class RequestTokenYamaID extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
-        service.onExecute(SocialVariable.V2ID_REQUEST_TOKEN_TASK);
+        service.onExecute(SocialVariable.YAMAID_REQUEST_TOKEN_TASK);
     }
 
     @Override
     protected String doInBackground(String... params) {
 
-            Retrofit retrofit = MidasApplication.getInstance().getRetrofit();
-            LoginService loginService = retrofit.create(LoginService.class);
+        Retrofit retrofit = MidasApplication.getInstance().getRetrofit();
+        LoginService loginService = retrofit.create(LoginService.class);
 
-            authentication = AuthenticationUtils.getCurrentAuthentication();
+        authentication = AuthenticationUtils.getCurrentAuthentication();
 
-            Map<String, String> param = new HashMap<>();
+        Map<String, String> param = new HashMap<>();
 
-            param.put("grant_type", GrantType.AUTHORIZATION_CODE.toString());
-            param.put("redirect_uri", SocialVariable.V2_CALLBACK);
-            param.put("client_id", SocialVariable.V2_APP_ID);
-            param.put("client_secret", SocialVariable.V2_API_SECRET);
-            param.put("scope", "read write");
-            param.put("code", params[0]);
+        param.put("grant_type", GrantType.AUTHORIZATION_CODE.toString());
+        param.put("redirect_uri", SocialVariable.YAMA_CALLBACK);
+        param.put("client_id", SocialVariable.YAMA_APP_ID);
+        param.put("client_secret", SocialVariable.YAMA_API_SECRET);
+        param.put("scope", "read write");
+        param.put("code", params[0]);
 
-            String authorization = new String(Base64.encode((SocialVariable.V2_APP_ID + ":" + SocialVariable.V2_API_SECRET).getBytes(), Base64.NO_WRAP));
+        String authorization = new String(Base64.encode((SocialVariable.YAMA_APP_ID + ":" + SocialVariable.YAMA_API_SECRET).getBytes(), Base64.NO_WRAP));
 
-            try {
-                Call<Authentication> callAuth = loginService.requestTokenYamaID("Basic " + authorization, "demo.merv.id" , param);
+        Call<Authentication> callAuth = loginService.requestTokenYamaID("Basic " + authorization, "yama2.meruvian.org", param);
 
-                callAuth.enqueue(new Callback<Authentication>() {
-                    @Override
-                    public void onResponse(Response<Authentication> response, Retrofit retrofit) {
-                        if (response.isSuccess()) {
-                            authentication = response.body();
-                            Log.d("ottt", authentication.getAccesToken());
-                            AuthenticationUtils.registerAuthentication(authentication);
-                        } else {
-                            int statusCode = response.code();
-                            Toast.makeText(context,"Failed retrieve data",Toast.LENGTH_SHORT).show();
-                            ResponseBody errorBody = response.errorBody();
-                        }
-                    }
+        try {
+            authentication = callAuth.execute().body();
+            AuthenticationUtils.registerAuthentication(authentication);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                    @Override
-                    public void onFailure(Throwable t) {
-                        Toast.makeText(context,"Failed retrieve data",Toast.LENGTH_SHORT).show();
-                        Log.d("Error", t.getMessage());
-                    }
-                });
 
-            } catch (Exception e ) {
-                e.getMessage();
-                Log.e("error", e.getMessage());
-            }
         return authentication.getAccesToken();
     }
 
@@ -108,6 +90,12 @@ public class RequestTokenYamaID extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String string) {
 
-        service.onSuccess(SocialVariable.YAMAID_REQUEST_TOKEN_TASK, authentication.getAccesToken());
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        Log.d("Expire in", String.valueOf(authentication.getExpiresIn()));
+        editor.putBoolean("yamaid", true);
+        editor.putString("yamaid_token", string);
+
+        editor.commit();
+        service.onSuccess(SocialVariable.YAMAID_REQUEST_TOKEN_TASK, string);
     }
 }

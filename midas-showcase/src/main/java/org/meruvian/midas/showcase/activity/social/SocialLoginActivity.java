@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.path.android.jobqueue.JobManager;
+
 import org.meruvian.midas.core.MidasApplication;
 import org.meruvian.midas.core.defaults.DefaultActivity;
 import org.meruvian.midas.showcase.R;
@@ -65,7 +67,6 @@ public class SocialLoginActivity extends DefaultActivity implements TaskService 
         ButterKnife.bind(this);
         setTitle(R.string.social_login);
         MidasApplication application = MidasApplication.getInstance();
-        jobManager = application.getJobManager();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         skip.setOnClickListener(new View.OnClickListener() {
@@ -264,9 +265,9 @@ public class SocialLoginActivity extends DefaultActivity implements TaskService 
                 Toast.makeText(this, getString(R.string.finish_update_facebook), Toast.LENGTH_LONG).show();
             } else if (code == SocialVariable.GOOGLE_REFRESH_TOKEN_TASK) {
                 Toast.makeText(this, getString(R.string.finish_update_google), Toast.LENGTH_LONG).show();
-                } else if (code == SocialVariable.YAMAID_REFRESH_TOKEN_TASK) {
-                    Toast.makeText(this, getString(R.string.finish_update_yama), Toast.LENGTH_LONG).show();
-                } else if (code == SocialVariable.DNAID_REFRESH_TOKEN_TASK) {
+            } else if (code == SocialVariable.YAMAID_REFRESH_TOKEN_TASK) {
+                Toast.makeText(this, getString(R.string.finish_update_yama), Toast.LENGTH_LONG).show();
+            } else if (code == SocialVariable.DNAID_REFRESH_TOKEN_TASK) {
                 Toast.makeText(this, getString(R.string.finish_update_dna), Toast.LENGTH_LONG).show();
             } else if (code == SocialVariable.V2ID_REFRESH_TOKEN_TASK) {
                 Toast.makeText(this, getString(R.string.finish_update_v2), Toast.LENGTH_LONG).show();
