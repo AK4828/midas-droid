@@ -61,8 +61,6 @@ public abstract class NavigationDrawer extends DefaultActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getSupportActionBar().setIcon(iconHome());
-//        setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -82,17 +80,6 @@ public abstract class NavigationDrawer extends DefaultActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-//        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
-//            @Override
-//            public void onDrawerClosed(View drawerView) {
-//                getSupportActionBar().setTitle(title);
-//            }
-//
-//            @Override
-//            public void onDrawerOpened(View drawerView) {
-//                getSupportActionBar().setTitle(drawerTitle);
-//            }
-//        };
         drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
