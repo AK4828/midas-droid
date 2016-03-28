@@ -21,47 +21,72 @@
 
     <uses-permission android:name="org.meruvian.midas.showcase.permission.C2D_MESSAGE" />
 
-    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <application android:allowBackup="true"
+    <application
         android:name="org.meruvian.midas.core.MidasApplication"
-        android:label="@string/app_name"
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
         android:theme="@style/Theme.MidasTheme">
-
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:theme="@style/Theme.MidasTheme" android:name=".activity.social.SocialLoginActivity" android:launchMode="singleTask">
+        <activity
+            android:name=".activity.social.SocialLoginActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.MidasTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="midas" android:host="social_login" />
+
+                <data
+                    android:host="social_login"
+                    android:scheme="midas" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" android:configChanges="screenSize|orientation" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.MidasTheme"/>
-        <activity android:name=".activity.MainActivity" android:theme="@style/Theme.MidasTheme" />
-        <activity android:name=".fragment.news.NewsViewFragment" android:theme="@style/Theme.MidasTheme"/>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:configChanges="screenSize|orientation"
+            android:theme="@style/Theme.MidasTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/Theme.MidasTheme" />
+        <!--<activity-->
+        <!--android:name=".fragment.news.NewsViewFragment"-->
+        <!--android:theme="@style/Theme.MidasTheme" />-->
 
         <receiver
             android:name=".gcm.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="org.meruvian.midas.showcase" />
             </intent-filter>
         </receiver>
-        <service android:name=".gcm.GcmService"/>
+
+        <service android:name=".gcm.GcmService" />
+
+        <activity
+            android:name=".activity.NewMainActivity"
+            android:label="@string/title_activity_new_main"></activity>
     </application>
 
 </manifest>

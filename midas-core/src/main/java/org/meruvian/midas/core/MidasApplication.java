@@ -48,7 +48,7 @@ public class MidasApplication extends Application {
         client.interceptors().add(logging);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://yama2.meruvian.org")
+                .baseUrl("http://demo.merv.id")
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .build();

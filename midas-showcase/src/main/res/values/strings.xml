@@ -37,4 +37,5 @@
     <string name="search">Search</string>
     <string name="advanced_search">Advanced Search</string>
     <string name="category">Category</string>
+    <string name="title_activity_new_main">NewMainActivity</string>
 </resources>

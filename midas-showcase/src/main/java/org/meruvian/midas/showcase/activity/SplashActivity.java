@@ -62,7 +62,7 @@ public class SplashActivity extends DefaultActivity implements TaskService {
                 } else {
                     Intent mainIntent;
                     if (preferences.contains("manual") || preferences.contains("mervid")) {
-                        mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                        mainIntent = new Intent(SplashActivity.this, NewMainActivity.class);
                     } else {
                         mainIntent = new Intent(SplashActivity.this, SocialLoginActivity.class);
                     }
@@ -99,7 +99,7 @@ public class SplashActivity extends DefaultActivity implements TaskService {
 
         if (result != null) {
             if (code == SocialVariable.MERVID_REFRESH_TOKEN_TASK) {
-                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(SplashActivity.this, NewMainActivity.class);
 
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();

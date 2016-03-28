@@ -20,6 +20,7 @@ import org.meruvian.midas.showcase.R;
 import org.meruvian.midas.core.service.TaskService;
 import org.meruvian.midas.showcase.activity.LoginActivity;
 import org.meruvian.midas.showcase.activity.MainActivity;
+import org.meruvian.midas.showcase.activity.NewMainActivity;
 import org.meruvian.midas.social.SocialVariable;
 import org.meruvian.midas.social.activity.WebViewActivity;
 import org.meruvian.midas.social.task.dnaid.RefreshTokenDNAID;
@@ -201,32 +202,32 @@ public class SocialLoginActivity extends DefaultActivity implements TaskService 
                 String result = (String) object;
                 if (result != null && !"".equalsIgnoreCase(result)) {
                     logins.get(0).setText(getString(R.string.logout_facebook));
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(new Intent(this, NewMainActivity.class));
                 }
             } else if (code == SocialVariable.GOOGLE_REQUEST_TOKEN_TASK) {
                 String result = (String) object;
                 if (result != null && !"".equalsIgnoreCase(result)) {
                     logins.get(1).setText(getString(R.string.logout_google));
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(new Intent(this, NewMainActivity.class));
                 }
             } else if (code == SocialVariable.YAMAID_REQUEST_TOKEN_TASK) {
                 String result = (String) object;
                 if (result != null && !"".equalsIgnoreCase(result)) {
                     logins.get(2).setText(getString(R.string.logout_yama));
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(new Intent(this, NewMainActivity.class));
                 }
             } else if (code == SocialVariable.DNAID_REQUEST_TOKEN_TASK) {
                 String result = (String) object;
                 if (result != null && !"".equalsIgnoreCase(result)) {
                     logins.get(3).setText(getString(R.string.login_dna));
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(new Intent(this, NewMainActivity.class));
                 }
             }
             else if (code == SocialVariable.V2ID_REQUEST_TOKEN_TASK) {
                 String result = (String) object;
                 if (result != null && !"".equalsIgnoreCase(result)) {
                     logins.get(4).setText(getString(R.string.login_v2));
-                    startActivity(new Intent(this, MainActivity.class));
+                    startActivity(new Intent(this, NewMainActivity.class));
                 }
             }
             else if (code == SocialVariable.MERVID_REQUEST_ACCESS) {
@@ -460,7 +461,6 @@ public class SocialLoginActivity extends DefaultActivity implements TaskService 
         if (uri != null && uri.toString().startsWith(SocialVariable.MERVID_CALLBACK)) {
             String code = uri.getQueryParameter("code");
             if (code != null && !"".equalsIgnoreCase(code)) {
-                Log.d("Intruder",code);
                 return code;
             }
         }

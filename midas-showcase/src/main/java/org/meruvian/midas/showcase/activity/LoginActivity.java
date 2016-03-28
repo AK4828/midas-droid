@@ -48,7 +48,7 @@ public class LoginActivity extends DefaultActivity implements TaskService {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                startActivity(new Intent(LoginActivity.this, NewMainActivity.class));
                 finish();
             }
         });
@@ -70,7 +70,7 @@ public class LoginActivity extends DefaultActivity implements TaskService {
     public void onSuccess(int code, Object result) {
         if (result != null) {
             if (code == GlobalVariable.LOGIN_TASK) {
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, NewMainActivity.class));
                 finish();
             }
         }
